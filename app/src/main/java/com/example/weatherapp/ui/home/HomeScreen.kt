@@ -1,6 +1,5 @@
 package com.example.weatherapp.ui.home
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +14,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,118 +25,136 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
+import androidx.navigation.NavController
 import com.example.weatherapp.R
 import com.example.weatherapp.ui.composables.TextInput
 import com.example.weatherapp.ui.composables.VerticalSpacer
+import com.example.weatherapp.ui.models.Navigation
 import com.example.weatherapp.ui.theme.WeatherAppTheme
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
+@Composable
+fun HomeContent(
+    homeState: HomeState,
+    modifier: Modifier = Modifier
+) {
+
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
     val viewModel: HomeViewModel = koinViewModel()
     val homeState by viewModel.homeState.collectAsState()
     var expanded by remember { mutableStateOf(false) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
 
     LaunchedEffect(lifecycleOwner) {
         viewModel.openDetailsEvent
             .flowWithLifecycle(lifecycleOwner.lifecycle)
             .collectLatest { homeState ->
-                Toast.makeText(context, "here", Toast.LENGTH_SHORT).show()
+                navController.navigate(
+                    Navigation.WeatherInfoFragmentNav(
+                        city = homeState.city,
+                        daysQuantity = homeState.daysQuantity,
+                        reportMode = homeState.reportMode
+                    )
+                )
             }
     }
 
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(16.dp)
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Box(
+            modifier = modifier.fillMaxSize().padding(innerPadding),
+            contentAlignment = Alignment.Center
         ) {
-            TextInput(
-                value = homeState.city,
-                onValueChange = { newText ->
-                    viewModel.onEvent(HomeEvent.UpdateCity(newText))
-                },
-                placeholderText = stringResource(R.string.city),
-                validationResult = homeState.validationResult.cityValidationResult,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            VerticalSpacer()
-
-            TextInput(
-                value = homeState.daysQuantity.toString(),
-                onValueChange = { newText ->
-                    if (newText.all { it.isDigit() }) {
-                        viewModel.onEvent(HomeEvent.UpdateDaysQuantity(newText))
-                    }
-                },
-                placeholderText = stringResource(R.string.days),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                validationResult = homeState.validationResult.daysQuantityValidationResult,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            VerticalSpacer()
-
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = !expanded }
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(16.dp)
             ) {
                 TextInput(
-                    value = homeState.reportMode.name,
-                    onValueChange = {},
-                    readOnly = true,
-                    placeholderText = stringResource(R.string.report_mode),
-                    modifier = Modifier
-                        .menuAnchor(MenuAnchorType.PrimaryNotEditable)
-                        .fillMaxWidth(),
-                    trailingIcon = {
-                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    value = homeState.city,
+                    onValueChange = { newText ->
+                        viewModel.onEvent(HomeEvent.UpdateCity(newText))
                     },
-                    textFieldColors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
+                    placeholderText = stringResource(R.string.city),
+                    validationResult = homeState.validationResult.cityValidationResult,
+                    modifier = Modifier.fillMaxWidth()
                 )
-                ExposedDropdownMenu(
+
+                VerticalSpacer()
+
+                TextInput(
+                    value = homeState.daysQuantity.toString(),
+                    onValueChange = { newText ->
+                        if (newText.all { it.isDigit() }) {
+                            viewModel.onEvent(HomeEvent.UpdateDaysQuantity(newText))
+                        }
+                    },
+                    placeholderText = stringResource(R.string.days),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    validationResult = homeState.validationResult.daysQuantityValidationResult,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                VerticalSpacer()
+
+                ExposedDropdownMenuBox(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false }
+                    onExpandedChange = { expanded = !expanded }
                 ) {
-                    homeState.reportModes.forEachIndexed { index, option ->
-                        DropdownMenuItem(
-                            onClick = {
-                                viewModel.onEvent(HomeEvent.UpdateReportMode(option))
-                                expanded = false
-                            },
-                            text = { Text(text = option) }
-                        )
-                        if (index != homeState.reportModes.lastIndex) {
-                            HorizontalDivider()
+                    TextInput(
+                        value = homeState.reportMode.name,
+                        onValueChange = {},
+                        readOnly = true,
+                        placeholderText = stringResource(R.string.report_mode),
+                        modifier = Modifier
+                            .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                            .fillMaxWidth(),
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                        },
+                        textFieldColors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
+                    )
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        homeState.reportModes.forEachIndexed { index, option ->
+                            DropdownMenuItem(
+                                onClick = {
+                                    viewModel.onEvent(HomeEvent.UpdateReportMode(option))
+                                    expanded = false
+                                },
+                                text = { Text(text = option) }
+                            )
+                            if (index != homeState.reportModes.lastIndex) {
+                                HorizontalDivider()
+                            }
                         }
                     }
                 }
             }
-        }
 
-        Button(
-            modifier = modifier.align(Alignment.BottomCenter),
-            onClick = { viewModel.onEvent(HomeEvent.ButtonNextEvent) }
-        ) {
-            Text(
-                text = stringResource(R.string.btn_open_details_text),
-            )
+            Button(
+                modifier = modifier.align(Alignment.BottomCenter),
+                onClick = { viewModel.onEvent(HomeEvent.ButtonNextEvent) }
+            ) {
+                Text(
+                    text = stringResource(R.string.btn_open_details_text),
+                )
+            }
         }
     }
 }
@@ -145,6 +163,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 @Composable
 fun WeatherScreenPreview() {
     WeatherAppTheme {
-        HomeScreen()
+        //HomeScreen()
     }
 }
