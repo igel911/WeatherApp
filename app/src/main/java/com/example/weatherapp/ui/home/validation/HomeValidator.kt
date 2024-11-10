@@ -1,0 +1,36 @@
+package com.example.weatherapp.ui.home.validation
+
+import com.example.weatherapp.R
+import com.example.weatherapp.ui.home.HomeState
+import com.example.weatherapp.ui.models.ValidationResult
+import com.example.weatherapp.ui.utils.resource_provider.ResourceProvider
+
+class HomeValidator(
+    private val resourceProvider: ResourceProvider
+) {
+
+    fun validate(state: HomeState): HomeValidationResult {
+        val cityValidationResult = validateCity(state.city)
+        val daysQuantityValidationResult = validateDaysQuantity(state.daysQuantity)
+        return HomeValidationResult(
+            cityValidationResult = cityValidationResult,
+            daysQuantityValidationResult = daysQuantityValidationResult
+        )
+    }
+
+    private fun validateCity(city: String): ValidationResult {
+        return if (city.isBlank()) {
+            ValidationResult(errorMessage = resourceProvider.getString(R.string.city_empty))
+        } else {
+            ValidationResult.valid()
+        }
+    }
+
+    private fun validateDaysQuantity(daysQuantity: Int): ValidationResult {
+        return if (daysQuantity == 0) {
+            ValidationResult(errorMessage = resourceProvider.getString(R.string.days_quantity_too_small))
+        } else {
+            ValidationResult.valid()
+        }
+    }
+}

@@ -1,5 +1,6 @@
 package com.example.weatherapp.ui.home
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -15,6 +17,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,22 +25,37 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.flowWithLifecycle
 import com.example.weatherapp.R
 import com.example.weatherapp.ui.composables.TextInput
 import com.example.weatherapp.ui.composables.VerticalSpacer
 import com.example.weatherapp.ui.theme.WeatherAppTheme
+import kotlinx.coroutines.flow.collectLatest
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
-    val viewModel: HomeViewModel = viewModel()
+    val viewModel: HomeViewModel = koinViewModel()
     val homeState by viewModel.homeState.collectAsState()
     var expanded by remember { mutableStateOf(false) }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    LaunchedEffect(lifecycleOwner) {
+        viewModel.openDetailsEvent
+            .flowWithLifecycle(lifecycleOwner.lifecycle)
+            .collectLatest { homeState ->
+                Toast.makeText(context, "here", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -54,6 +72,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     viewModel.onEvent(HomeEvent.UpdateCity(newText))
                 },
                 placeholderText = stringResource(R.string.city),
+                validationResult = homeState.validationResult.cityValidationResult,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -68,6 +87,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 },
                 placeholderText = stringResource(R.string.days),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                validationResult = homeState.validationResult.daysQuantityValidationResult,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -108,6 +128,15 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     }
                 }
             }
+        }
+
+        Button(
+            modifier = modifier.align(Alignment.BottomCenter),
+            onClick = { viewModel.onEvent(HomeEvent.ButtonNextEvent) }
+        ) {
+            Text(
+                text = stringResource(R.string.btn_open_details_text),
+            )
         }
     }
 }
