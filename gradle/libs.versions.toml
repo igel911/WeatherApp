@@ -11,6 +11,9 @@ composeBom = "2024.10.01"
 koinAndroidxCompose = "3.4.3"
 navigationCompose = "2.8.3"
 serializationJson = "1.6.3"
+retrofit = "2.11.0"
+jakewhartonConverter = "1.0.0"
+okHttp = "4.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +35,10 @@ koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", versi
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serializationJson" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-kotlinx-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization" }
+jakewharton-retrofit = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "jakewhartonConverter"}
+squareup-okhttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttp"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -1,7 +1,7 @@
 package com.example.weatherapp
 
 import android.app.Application
-import com.example.weatherapp.di.repositoryModule
+import com.example.weatherapp.di.apiModule
 import com.example.weatherapp.di.useCaseModule
 import com.example.weatherapp.di.utilModule
 import com.example.weatherapp.di.validatorModule
@@ -22,7 +22,7 @@ class App: Application() {
                 viewModelModule,
                 utilModule,
                 useCaseModule,
-                repositoryModule,
+                apiModule,
                 validatorModule
             )
         }

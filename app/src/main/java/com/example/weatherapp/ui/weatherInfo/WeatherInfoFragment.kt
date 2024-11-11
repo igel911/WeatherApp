@@ -9,11 +9,14 @@ import androidx.fragment.app.Fragment
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentWeatherInfoBinding
 import com.example.weatherapp.ui.models.ReportMode
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WeatherInfoFragment: Fragment(R.layout.fragment_weather_info) {
+class WeatherInfoFragment : Fragment(R.layout.fragment_weather_info) {
 
     private var _binding: FragmentWeatherInfoBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: WeatherInfoViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +30,11 @@ class WeatherInfoFragment: Fragment(R.layout.fragment_weather_info) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvInfo.text = "city = ${getCity()}, daysQuantity = ${getDaysQuantity()}, ReportMode = ${getReportMode()}"
+        viewModel.getForecast(
+            city = getCity(),
+            daysQuantity = getDaysQuantity(),
+            reportMode = getReportMode()
+        )
     }
 
     override fun onDestroyView() {
@@ -39,7 +46,8 @@ class WeatherInfoFragment: Fragment(R.layout.fragment_weather_info) {
 
     private fun getDaysQuantity(): Int? = arguments?.getInt(DAYS_QUANTITY)
 
-    private fun getReportMode(): ReportMode? = arguments?.getSerializable(REPORT_MODE) as? ReportMode
+    private fun getReportMode(): ReportMode? =
+        arguments?.getSerializable(REPORT_MODE) as? ReportMode
 
     companion object {
         private const val CITY = "CITY"
