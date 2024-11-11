@@ -1,16 +1,22 @@
 package com.example.weatherapp.domain
 
+import android.location.Geocoder
 import com.example.weatherapp.data.WeatherApi
 import com.example.weatherapp.data.models.WeatherItem
 import com.example.weatherapp.data.models.WeatherResource
 import com.example.weatherapp.domain.models.FullResult
 import com.example.weatherapp.domain.models.ShortResult
 import com.example.weatherapp.domain.models.WeatherResult
+import com.example.weatherapp.domain.utils.DispatcherProvider
+import com.example.weatherapp.domain.utils.awaitFromLocationName
 import com.example.weatherapp.ui.models.ReportMode
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
 class WeatherInfoUseCase(
-    private val api: WeatherApi
+    private val api: WeatherApi,
+    private val geocoder: Geocoder,
+    private val dispatcherProvider: DispatcherProvider
 ) {
 
     suspend fun getForecast(
@@ -18,16 +24,29 @@ class WeatherInfoUseCase(
         daysQuantity: Int,
         reportMode: ReportMode
     ): Result<WeatherResult> {
-        return try {
-            val response = api.getForecast()
-            Result.success(
-                WeatherResult(
-                    short = getShortResult(response, reportMode),
-                    full = getFullResult(response, reportMode)
-                )
-            )
-        } catch (e: HttpException) {
-            Result.failure(e)
+        return withContext(dispatcherProvider.io) {
+            val address = geocoder
+                .awaitFromLocationName(city)
+                .orEmpty()
+                .firstOrNull()
+
+            address?.let {
+                try {
+                    val response = api.getForecast(
+                        latitude = address.latitude,
+                        longitude = address.longitude
+                    )
+                    Result.success(
+                        WeatherResult(
+                            short = getShortResult(response, reportMode),
+                            full = getFullResult(response, reportMode)
+                        )
+                    )
+                } catch (e: HttpException) {
+                    Result.failure(e)
+                }
+            } ?: Result.failure(NullPointerException("address is null"))
+
         }
     }
 

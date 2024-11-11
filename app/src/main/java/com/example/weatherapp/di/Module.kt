@@ -1,8 +1,11 @@
 package com.example.weatherapp.di
 
+import android.content.Context
+import android.location.Geocoder
 import com.example.weatherapp.BuildConfig
 import com.example.weatherapp.data.WeatherApi
 import com.example.weatherapp.domain.WeatherInfoUseCase
+import com.example.weatherapp.domain.utils.DispatcherProvider
 import com.example.weatherapp.ui.home.HomeViewModel
 import com.example.weatherapp.ui.home.validation.HomeValidator
 import com.example.weatherapp.ui.utils.resource_provider.ResourceProvider
@@ -14,6 +17,7 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import java.util.Locale
 
 
 val viewModelModule = module {
@@ -23,6 +27,8 @@ val viewModelModule = module {
 
 val utilModule = module {
     singleOf(::ResourceProvider)
+    singleOf(::DispatcherProvider)
+    factory { provideGeocoder(get()) }
 }
 
 val useCaseModule = module {
@@ -49,4 +55,8 @@ fun provideRetrofit(): Retrofit {
 }
 
 fun provideWeatherApi(retrofit: Retrofit): WeatherApi = retrofit.create(WeatherApi::class.java)
+
+fun provideGeocoder(context: Context): Geocoder {
+    return Geocoder(context, Locale.getDefault())
+}
 
