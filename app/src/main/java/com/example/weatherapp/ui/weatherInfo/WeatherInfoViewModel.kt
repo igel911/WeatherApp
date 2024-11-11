@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.domain.WeatherInfoUseCase
 import com.example.weatherapp.domain.models.FullResult
 import com.example.weatherapp.domain.models.ShortResult
-import com.example.weatherapp.ui.home.HomeState
 import com.example.weatherapp.ui.models.ReportMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,10 +16,10 @@ class WeatherInfoViewModel(
     private val weatherInfoUseCase: WeatherInfoUseCase
 ): ViewModel() {
 
-    private val _shortViewState = MutableStateFlow<ShortResult?>(null)
+    private val _shortViewState = MutableStateFlow<List<ShortResult>?>(null)
     val shortViewState = _shortViewState.asStateFlow()
 
-    private val _fullViewState = MutableStateFlow<FullResult?>(null)
+    private val _fullViewState = MutableStateFlow<List<FullResult>?>(null)
     val fullViewState = _fullViewState.asStateFlow()
 
     fun getForecast(
@@ -33,8 +32,8 @@ class WeatherInfoViewModel(
                 val forecastResult = weatherInfoUseCase.getForecast(city, daysQuantity, reportMode)
                 Log.d("taggg", "forecastResult = $forecastResult")
                 if (forecastResult.isSuccess) {
-                    _fullViewState.update { forecastResult.getOrNull()?.full }
-                    _shortViewState.update { forecastResult.getOrNull()?.short }
+                    _fullViewState.update { forecastResult.getOrNull()?.fullList }
+                    _shortViewState.update { forecastResult.getOrNull()?.shortList }
                 } else {
                     // do proper logging
                     Log.e("taggg", "${forecastResult.exceptionOrNull()?.message}")

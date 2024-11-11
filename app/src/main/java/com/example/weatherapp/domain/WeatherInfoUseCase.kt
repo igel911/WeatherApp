@@ -38,8 +38,8 @@ class WeatherInfoUseCase(
                     )
                     Result.success(
                         WeatherResult(
-                            short = getShortResult(response, reportMode),
-                            full = getFullResult(response, reportMode)
+                            shortList = getShortResult(response, reportMode, daysQuantity),
+                            fullList = getFullResult(response, reportMode, daysQuantity)
                         )
                     )
                 } catch (e: HttpException) {
@@ -52,34 +52,38 @@ class WeatherInfoUseCase(
 
     private fun getShortResult(
         response: WeatherResource,
-        reportMode: ReportMode
-    ): ShortResult? {
+        reportMode: ReportMode,
+        daysQuantity: Int
+    ): List<ShortResult>? {
         if (reportMode == ReportMode.FULL) return null
-        val weatherItem = response.weatherItems?.firstOrNull()
-        val temperature = getTemperature(weatherItem)
-        val weatherType = getWeatherType(weatherItem)
-        return ShortResult(temperature, weatherType)
+        return response.weatherItems?.take(daysQuantity)?.map { weatherItem ->
+            val temperature = getTemperature(weatherItem)
+            val weatherType = getWeatherType(weatherItem)
+            ShortResult(temperature, weatherType)
+        }
     }
 
 
     private fun getFullResult(
         response: WeatherResource,
-        reportMode: ReportMode
-    ): FullResult? {
+        reportMode: ReportMode,
+        daysQuantity: Int
+    ): List<FullResult>? {
         if (reportMode == ReportMode.SHORT) return null
-        val weatherItem = response.weatherItems?.firstOrNull()
-        val temperature = getTemperature(weatherItem)
-        val weatherType = getWeatherType(weatherItem)
-        val description = weatherItem?.weatherList?.firstOrNull()?.weatherDescription ?: ""
-        val humidity = weatherItem?.mainDto?.humidity ?: 0
-        val pressure = weatherItem?.mainDto?.pressure ?: 0
-        return FullResult(
-            temperature = temperature,
-            weatherType = weatherType,
-            description = description,
-            pressure = pressure,
-            humidity = humidity
-        )
+        return response.weatherItems?.take(daysQuantity)?.map { weatherItem ->
+            val temperature = getTemperature(weatherItem)
+            val weatherType = getWeatherType(weatherItem)
+            val description = weatherItem.weatherList?.firstOrNull()?.weatherDescription ?: ""
+            val humidity = weatherItem.mainDto?.humidity ?: 0
+            val pressure = weatherItem.mainDto?.pressure ?: 0
+            FullResult(
+                temperature = temperature,
+                weatherType = weatherType,
+                description = description,
+                pressure = pressure,
+                humidity = humidity
+            )
+        }
     }
 
     private fun getTemperature(weatherItem: WeatherItem?): Double =
