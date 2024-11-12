@@ -2,4 +2,12 @@
 <resources>
 
     <style name="Theme.WeatherApp" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="TextViewTitleStyle" parent="TextViewValueStyle">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextViewValueStyle">
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

@@ -73,6 +73,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.jakewharton.retrofit)
     implementation(libs.squareup.okhttp3)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.constraintlayout)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

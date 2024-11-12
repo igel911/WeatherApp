@@ -19,7 +19,6 @@ import com.example.weatherapp.ui.weatherInfo.WeatherInfoFragment
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             WeatherAppTheme {
                 val navController = rememberNavController()

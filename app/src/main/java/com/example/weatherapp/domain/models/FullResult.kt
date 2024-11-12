@@ -6,4 +6,4 @@ data class FullResult(
     val description: String,
     val pressure: Int,
     val humidity: Int
-)
+) : AbstractWeatherResult()

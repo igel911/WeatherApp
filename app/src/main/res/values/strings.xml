@@ -6,4 +6,9 @@
     <string name="days_quantity_too_small">Field can\'t be less than 1</string>
     <string name="city_empty">Field can\'t be empty</string>
     <string name="btn_open_details_text">Open weather details</string>
+    <string name="temperature">Temperature</string>
+    <string name="weather_type">Weather type</string>
+    <string name="description">Description</string>
+    <string name="pressure">Pressure</string>
+    <string name="humidity">Humidity</string>
 </resources>

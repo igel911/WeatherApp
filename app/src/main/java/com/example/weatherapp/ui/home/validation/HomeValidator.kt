@@ -3,7 +3,7 @@ package com.example.weatherapp.ui.home.validation
 import com.example.weatherapp.R
 import com.example.weatherapp.ui.home.HomeState
 import com.example.weatherapp.ui.models.ValidationResult
-import com.example.weatherapp.ui.utils.resource_provider.ResourceProvider
+import com.example.weatherapp.ui.utils.ResourceProvider
 
 class HomeValidator(
     private val resourceProvider: ResourceProvider

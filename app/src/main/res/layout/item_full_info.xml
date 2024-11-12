@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glCentre"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <TextView
+        android:id="@+id/tvTemperatureTitle"
+        style="@style/TextViewTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/temperature"
+        app:layout_constraintEnd_toStartOf="@id/glCentre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTemperatureValue"
+        style="@style/TextViewValueStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/glCentre"
+        app:layout_constraintTop_toTopOf="@id/tvTemperatureTitle"
+        tools:text="25" />
+
+    <TextView
+        android:id="@+id/tvWeatherTypeTitle"
+        style="@style/TextViewTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/weather_type"
+        app:layout_constraintEnd_toStartOf="@id/glCentre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTemperatureTitle" />
+
+    <TextView
+        android:id="@+id/tvWeatherTypeValue"
+        style="@style/TextViewValueStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/glCentre"
+        app:layout_constraintTop_toTopOf="@id/tvWeatherTypeTitle"
+        tools:text="Rain" />
+
+    <TextView
+        android:id="@+id/tvDescriptionTitle"
+        style="@style/TextViewTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/description"
+        app:layout_constraintEnd_toStartOf="@id/glCentre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWeatherTypeTitle" />
+
+    <TextView
+        android:id="@+id/tvDescriptionValue"
+        style="@style/TextViewValueStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/glCentre"
+        app:layout_constraintTop_toTopOf="@id/tvDescriptionTitle"
+        tools:text="Heavy Rain" />
+
+    <TextView
+        android:id="@+id/tvPressureTitle"
+        style="@style/TextViewTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/pressure"
+        app:layout_constraintEnd_toStartOf="@id/glCentre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDescriptionTitle" />
+
+    <TextView
+        android:id="@+id/tvPressureValue"
+        style="@style/TextViewValueStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/glCentre"
+        app:layout_constraintTop_toTopOf="@id/tvPressureTitle"
+        tools:text="1000" />
+
+    <TextView
+        android:id="@+id/tvHumidityTitle"
+        style="@style/TextViewTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/humidity"
+        app:layout_constraintEnd_toStartOf="@id/glCentre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPressureTitle" />
+
+    <TextView
+        android:id="@+id/tvHumidityValue"
+        style="@style/TextViewValueStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/glCentre"
+        app:layout_constraintTop_toTopOf="@id/tvHumidityTitle"
+        tools:text="1000" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

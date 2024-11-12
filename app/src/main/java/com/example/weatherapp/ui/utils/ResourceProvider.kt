@@ -1,4 +1,4 @@
-package com.example.weatherapp.ui.utils.resource_provider
+package com.example.weatherapp.ui.utils
 
 import android.content.Context
 import androidx.annotation.ArrayRes

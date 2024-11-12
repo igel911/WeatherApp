@@ -8,7 +8,7 @@ import com.example.weatherapp.domain.WeatherInfoUseCase
 import com.example.weatherapp.domain.utils.DispatcherProvider
 import com.example.weatherapp.ui.home.HomeViewModel
 import com.example.weatherapp.ui.home.validation.HomeValidator
-import com.example.weatherapp.ui.utils.resource_provider.ResourceProvider
+import com.example.weatherapp.ui.utils.ResourceProvider
 import com.example.weatherapp.ui.weatherInfo.WeatherInfoViewModel
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
