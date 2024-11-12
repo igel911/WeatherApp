@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.squareup.okhttp3)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.material)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

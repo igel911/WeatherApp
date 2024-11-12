@@ -2,7 +2,6 @@ package com.example.weatherapp
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
@@ -25,7 +24,6 @@ class MainActivity : FragmentActivity() {
 
                 NavHost(navController = navController, startDestination = Navigation.HomeNav) {
                     composable<Navigation.HomeNav> { HomeScreen(navController) }
-                    //fragment<WeatherInfoFragment>("weatherInfoFragment") { WeatherInfoFragment() }
                     composable<Navigation.WeatherInfoFragmentNav> {
                         val data = it.toRoute<Navigation.WeatherInfoFragmentNav>()
                         AndroidViewFragment(

@@ -21,6 +21,9 @@ class WeatherInfoViewModel(
     private val _fullViewState = MutableStateFlow<List<AbstractWeatherResult>?>(null)
     val fullViewState = _fullViewState.asStateFlow()
 
+    private val _loadingState = MutableStateFlow(false)
+    val loadingState = _loadingState.asStateFlow()
+
     fun getForecast(
         city: String?,
         daysQuantity: Int?,
@@ -28,6 +31,7 @@ class WeatherInfoViewModel(
     ) {
         if (city != null && daysQuantity != null && reportMode != null) {
             viewModelScope.launch {
+                _loadingState.update { true }
                 val forecastResult = weatherInfoUseCase.getForecast(city, daysQuantity, reportMode)
                 if (forecastResult.isSuccess) {
                     _fullViewState.update { forecastResult.getOrNull()?.fullList }
@@ -36,6 +40,7 @@ class WeatherInfoViewModel(
                     // do proper logging
                     Log.e("taggg", "${forecastResult.exceptionOrNull()?.message}")
                 }
+                _loadingState.update { false }
             }
         }
     }

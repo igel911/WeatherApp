@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -92,6 +93,9 @@ class WeatherInfoFragment : Fragment(R.layout.fragment_weather_info) {
         viewModel.fullViewState.collectLatestWithLifecycle { items ->
             items?.let { weatherInfoAdapter.submitList(it) }
 
+        }
+        viewModel.loadingState.collectLatestWithLifecycle { isVisible ->
+            binding.progress.isVisible = isVisible
         }
     }
 
