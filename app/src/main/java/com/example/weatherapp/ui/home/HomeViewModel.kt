@@ -40,16 +40,12 @@ class HomeViewModel(
         }
     }
 
-    private fun updateDaysQuantity(daysQuantity: String) {
-        try {
-            _homeState.update { state ->
-                state
-                    .copy(daysQuantity = daysQuantity.toInt())
-                    .also { doValidation(it) }
-            }
-        } catch (e: NumberFormatException) {
-            // do proper logging
-            Log.e("taggg", e.stackTraceToString())
+    private fun updateDaysQuantity(daysQuantityStr: String) {
+        Log.d("taggg", "daysQuantity = ,$daysQuantityStr,")
+        _homeState.update { state ->
+            state
+                .copy(daysQuantityStr = daysQuantityStr)
+                .also { doValidation(it) }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.weatherapp.ui.home.validation
 
+import androidx.core.text.isDigitsOnly
 import com.example.weatherapp.R
 import com.example.weatherapp.ui.home.HomeState
 import com.example.weatherapp.ui.models.ValidationResult
@@ -11,7 +12,7 @@ class HomeValidator(
 
     fun validate(state: HomeState): HomeValidationResult {
         val cityValidationResult = validateCity(state.city)
-        val daysQuantityValidationResult = validateDaysQuantity(state.daysQuantity)
+        val daysQuantityValidationResult = validateDaysQuantity(state.daysQuantityStr)
         return HomeValidationResult(
             cityValidationResult = cityValidationResult,
             daysQuantityValidationResult = daysQuantityValidationResult
@@ -26,11 +27,12 @@ class HomeValidator(
         }
     }
 
-    private fun validateDaysQuantity(daysQuantity: Int): ValidationResult {
-        return if (daysQuantity == 0) {
-            ValidationResult(errorMessage = resourceProvider.getString(R.string.days_quantity_too_small))
-        } else {
-            ValidationResult.valid()
+    private fun validateDaysQuantity(daysQuantityStr: String): ValidationResult {
+        return when {
+            daysQuantityStr.isEmpty() -> ValidationResult(errorMessage = resourceProvider.getString(R.string.days_quantity_is_empty))
+            !daysQuantityStr.isDigitsOnly() -> ValidationResult(errorMessage = resourceProvider.getString(R.string.days_quantity_bad_format))
+            daysQuantityStr.startsWith("0") -> ValidationResult(errorMessage = resourceProvider.getString(R.string.days_quantity_too_small))
+             else -> ValidationResult.valid()
         }
     }
 }

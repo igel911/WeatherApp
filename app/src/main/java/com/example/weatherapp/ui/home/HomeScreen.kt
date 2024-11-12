@@ -96,7 +96,7 @@ fun HomeScreen(
                 VerticalSpacer()
 
                 TextInput(
-                    value = homeState.daysQuantity.toString(),
+                    value = homeState.daysQuantityStr.toString(),
                     onValueChange = { newText ->
                         if (newText.all { it.isDigit() }) {
                             viewModel.onEvent(HomeEvent.UpdateDaysQuantity(newText))
