@@ -1,5 +1,6 @@
 package com.example.weatherapp.ui.weatherInfo.list
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,10 @@ class WeatherInfoAdapter :
         return when (viewType) {
             R.layout.item_short_info -> ShortInfoViewHolder.create(parent)
             R.layout.item_full_info -> FullInfoViewHolder.create(parent)
-            else -> throw IllegalArgumentException("unknown viewType")
+            else -> {
+                Log.e("tag", "unknown viewType")
+                DummyViewHolder.create(parent)
+            }
         }
     }
 
