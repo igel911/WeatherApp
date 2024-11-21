@@ -37,7 +37,8 @@ class WeatherInfoAdapter :
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is WeatherResultItem.ShortResult -> R.layout.item_short_info
-            else -> R.layout.item_full_info
+            is WeatherResultItem.FullResult -> R.layout.item_full_info
+            else -> R.layout.item_dummy
         }
     }
 }
