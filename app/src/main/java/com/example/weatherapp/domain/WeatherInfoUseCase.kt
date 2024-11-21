@@ -4,14 +4,14 @@ import android.location.Geocoder
 import com.example.weatherapp.data.WeatherApi
 import com.example.weatherapp.data.models.WeatherItem
 import com.example.weatherapp.data.models.WeatherResource
-import com.example.weatherapp.domain.models.FullResult
-import com.example.weatherapp.domain.models.ShortResult
 import com.example.weatherapp.domain.models.WeatherResult
+import com.example.weatherapp.domain.models.WeatherResultItem
 import com.example.weatherapp.domain.utils.DispatcherProvider
 import com.example.weatherapp.domain.utils.awaitFromLocationName
 import com.example.weatherapp.ui.models.ReportMode
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import java.util.UUID
 
 class WeatherInfoUseCase(
     private val api: WeatherApi,
@@ -54,12 +54,16 @@ class WeatherInfoUseCase(
         response: WeatherResource,
         reportMode: ReportMode,
         daysQuantity: Int
-    ): List<ShortResult>? {
+    ): List<WeatherResultItem.ShortResult>? {
         if (reportMode == ReportMode.FULL) return null
         return response.weatherItems?.take(daysQuantity)?.map { weatherItem ->
             val temperature = getTemperature(weatherItem)
             val weatherType = getWeatherType(weatherItem)
-            ShortResult(temperature, weatherType)
+            WeatherResultItem.ShortResult(
+                id = UUID.randomUUID().toString(),
+                temperature = temperature,
+                weatherType = weatherType
+            )
         }
     }
 
@@ -68,7 +72,7 @@ class WeatherInfoUseCase(
         response: WeatherResource,
         reportMode: ReportMode,
         daysQuantity: Int
-    ): List<FullResult>? {
+    ): List<WeatherResultItem.FullResult>? {
         if (reportMode == ReportMode.SHORT) return null
         return response.weatherItems?.take(daysQuantity)?.map { weatherItem ->
             val temperature = getTemperature(weatherItem)
@@ -76,7 +80,8 @@ class WeatherInfoUseCase(
             val description = weatherItem.weatherList?.firstOrNull()?.weatherDescription ?: ""
             val humidity = weatherItem.mainDto?.humidity ?: 0
             val pressure = weatherItem.mainDto?.pressure ?: 0
-            FullResult(
+            WeatherResultItem.FullResult(
+                id = UUID.randomUUID().toString(),
                 temperature = temperature,
                 weatherType = weatherType,
                 description = description,

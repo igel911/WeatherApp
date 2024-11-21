@@ -1,16 +1,16 @@
 package com.example.weatherapp.ui.weatherInfo.list
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.databinding.ItemShortInfoBinding
-import com.example.weatherapp.domain.models.ShortResult
+import com.example.weatherapp.domain.models.WeatherResultItem
 import com.example.weatherapp.ui.utils.layoutInflater
-import com.example.weatherapp.ui.weatherInfo.WeatherInfoViewHolder
 
 class ShortInfoViewHolder(
     private val viewBinding: ItemShortInfoBinding
-) : WeatherInfoViewHolder<ShortResult>(viewBinding) {
+) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    override fun bind(item: ShortResult) {
+    fun bind(item: WeatherResultItem.ShortResult) {
         with(viewBinding) {
             tvTemperatureValue.text = item.temperature.toString()
             tvWeatherTypeValue.text = item.weatherType

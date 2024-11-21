@@ -1,21 +1,18 @@
 package com.example.weatherapp.ui.weatherInfo.list
 
-import android.annotation.SuppressLint
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
-import com.example.weatherapp.domain.models.AbstractWeatherResult
-import com.example.weatherapp.domain.models.FullResult
-import com.example.weatherapp.domain.models.ShortResult
-import com.example.weatherapp.ui.weatherInfo.WeatherInfoViewHolder
+import com.example.weatherapp.domain.models.WeatherResultItem
 
-class WeatherInfoAdapter : RecyclerView.Adapter<WeatherInfoViewHolder<*>>() {
-    private var items = emptyList<AbstractWeatherResult>()
+class WeatherInfoAdapter :
+    ListAdapter<WeatherResultItem, RecyclerView.ViewHolder>(WeatherResultDiffUtil) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): WeatherInfoViewHolder<*> {
+    ): RecyclerView.ViewHolder {
         return when (viewType) {
             R.layout.item_short_info -> ShortInfoViewHolder.create(parent)
             R.layout.item_full_info -> FullInfoViewHolder.create(parent)
@@ -23,28 +20,20 @@ class WeatherInfoAdapter : RecyclerView.Adapter<WeatherInfoViewHolder<*>>() {
         }
     }
 
-    override fun getItemCount(): Int = items.size
-
     override fun onBindViewHolder(
-        holder: WeatherInfoViewHolder<*>,
+        holder: RecyclerView.ViewHolder,
         position: Int
     ) {
         when (holder) {
-            is ShortInfoViewHolder -> holder.bind(items[position] as ShortResult)
-            is FullInfoViewHolder -> holder.bind(items[position] as FullResult)
+            is ShortInfoViewHolder -> holder.bind(getItem(position) as WeatherResultItem.ShortResult)
+            is FullInfoViewHolder -> holder.bind(getItem(position) as WeatherResultItem.FullResult)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (items[position]) {
-            is ShortResult -> R.layout.item_short_info
+        return when (getItem(position)) {
+            is WeatherResultItem.ShortResult -> R.layout.item_short_info
             else -> R.layout.item_full_info
         }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun submitList(list: List<AbstractWeatherResult>) {
-        items = list
-        notifyDataSetChanged()
     }
 }

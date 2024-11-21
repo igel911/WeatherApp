@@ -88,11 +88,9 @@ class WeatherInfoFragment : Fragment(R.layout.fragment_weather_info) {
     private fun observeViewModel() {
         viewModel.shortViewState.collectLatestWithLifecycle { items ->
             items?.let { weatherInfoAdapter.submitList(it) }
-
         }
         viewModel.fullViewState.collectLatestWithLifecycle { items ->
             items?.let { weatherInfoAdapter.submitList(it) }
-
         }
         viewModel.loadingState.collectLatestWithLifecycle { isVisible ->
             binding.progress.isVisible = isVisible
