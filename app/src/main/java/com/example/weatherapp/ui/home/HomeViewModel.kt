@@ -3,8 +3,8 @@ package com.example.weatherapp.ui.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.ui.home.validation.HomeValidationResult
-import com.example.weatherapp.ui.home.validation.HomeValidator
+import com.example.weatherapp.ui.utils.validation.HomeValidationResult
+import com.example.weatherapp.ui.utils.validation.HomeValidator
 import com.example.weatherapp.ui.models.ReportMode
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

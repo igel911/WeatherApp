@@ -1,6 +1,6 @@
 package com.example.weatherapp.ui.home
 
-import com.example.weatherapp.ui.home.validation.HomeValidationResult
+import com.example.weatherapp.ui.utils.validation.HomeValidationResult
 import com.example.weatherapp.ui.models.ReportMode
 
 data class HomeState(

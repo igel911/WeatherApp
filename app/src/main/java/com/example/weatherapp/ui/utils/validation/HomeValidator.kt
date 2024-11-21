@@ -1,4 +1,4 @@
-package com.example.weatherapp.ui.home.validation
+package com.example.weatherapp.ui.utils.validation
 
 import androidx.core.text.isDigitsOnly
 import com.example.weatherapp.R

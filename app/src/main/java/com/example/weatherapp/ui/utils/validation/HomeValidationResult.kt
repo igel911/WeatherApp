@@ -1,4 +1,4 @@
-package com.example.weatherapp.ui.home.validation
+package com.example.weatherapp.ui.utils.validation
 
 import com.example.weatherapp.ui.models.ValidationResult
 
